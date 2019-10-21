@@ -13,6 +13,14 @@ export default class CryptoModel extends React.Component {
     bounceValue: new Animated.Value(0.5)
   };
 
+  bounce = ({ value, initial, toValue, friction = 1.5 }) => {
+    value.setValue(initial);
+    Animated.spring(value, {
+      toValue,
+      friction
+    }).start();
+  };
+
   componentDidMount() {
     Animated.loop(
       Animated.timing(this.state.rotation, {
@@ -20,6 +28,19 @@ export default class CryptoModel extends React.Component {
         duration: 6000
       })
     ).start();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.crypto !== nextProps.crypto) {
+      const cryptoConfig = {
+        value: this.state.bounceValue,
+        initial: 0.1,
+        toValue: 0.5,
+        friction: 5
+      };
+
+      this.bounce(cryptoConfig);
+    }
   }
 
   rotations = {
@@ -51,9 +72,9 @@ export default class CryptoModel extends React.Component {
         <AnimatedEntity
           style={{
             transform: [
-              { scaleX: 1 },
-              { scaleY: 1 },
-              { scaleZ: 1 },
+              { scaleX: this.state.bounceValue },
+              { scaleY: this.state.bounceValue },
+              { scaleZ: this.state.bounceValue },
               { rotateX: this.rotations[`${this.props.crypto}`].rotateX },
               { rotateY: this.rotations[`${this.props.crypto}`].rotateY },
               { rotateZ: this.rotations[`${this.props.crypto}`].rotateZ }
