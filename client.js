@@ -15,7 +15,7 @@ function init(bundle, parent, options = {}) {
     r360.createRoot("ConnectCryptoModel", {
       /* initial props */
     }),
-    new Location([0,0,-1])
+    new Location([0,0,-1.5])
   );
 
   const leftPanel = new Surface(300,600,Surface.SurfaceShape.Flat);
